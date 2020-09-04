@@ -7,7 +7,7 @@ import "./Container.css";
 
 const Container = () => {
   return (
-    <div>
+    <div className="container">
       <Title />
       <Conversion />
     </div>
