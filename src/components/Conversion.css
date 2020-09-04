@@ -1,0 +1,93 @@
+.conversion {
+  width: 100%;
+  height: 75%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.conversion-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.conversion-row.first {
+  height: 40%;
+}
+
+.conversion-row.first div {
+  padding-top: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  height: 100%;
+}
+
+.conversion-row.first input {
+  width: 8rem;
+  height: 25px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.conversion-row.first button {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-top: 3rem;
+  height: 2.3rem;
+  width: 7rem;
+  border: none;
+  background-color: #522473;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  outline: none;
+}
+
+.conversion-row.first button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 5px black;
+}
+
+.conversion-row.first button:active {
+  transform: scale(1);
+  box-shadow: 0 0 10px black;
+}
+
+.conversion-row.first select {
+  height: 30px;
+  width: 4rem;
+  border-radius: 5px;
+}
+
+.conversion-row.second {
+  height: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.conversion-row.second h1,
+.conversion-row.second h2 {
+  padding: 5px;
+}
+
+.conversion-row.third {
+  height: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.conversion-row.third h3 {
+  margin: 3rem;
+}

@@ -1,0 +1,11 @@
+.container {
+  background-color: whitesmoke;
+  width: 45rem;
+  height: 30rem;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 20px black;
+}
