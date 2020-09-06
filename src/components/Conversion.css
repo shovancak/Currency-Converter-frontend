@@ -58,6 +58,17 @@
   outline: none;
 }
 
+.conversion-row.first button:disabled {
+  background-color: #522473af;
+
+  cursor: default;
+}
+
+.conversion-row.first button:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 .conversion-row.first button:hover {
   transform: scale(1.05);
   box-shadow: 0 0 5px black;
