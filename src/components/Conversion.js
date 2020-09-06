@@ -26,7 +26,7 @@ const Conversion = () => {
             onChange={inputValueHandler}
           ></input>
         </div>
-        <button>CONVERT</button>
+        <button disabled={!amountFrom || amountFrom === 0}>CONVERT</button>
         <div>
           <h2>Destination Currency</h2>
           <h5>Pick destination currency:</h5>
