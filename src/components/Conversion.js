@@ -15,6 +15,7 @@ const Conversion = () => {
     totalConversions: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [selectedCurrencyOption, setSelectedCurrencyOption] = useState();
 
   const inputValueHandler = (event) => {
     const value = event.target.value;
@@ -32,6 +33,7 @@ const Conversion = () => {
         );
         const data = await response.json();
         setDestinationCurrencyOptions([...Object.keys(data.latestData)]);
+        setSelectedCurrencyOption([...Object.keys(data.latestData)][0]);
         setLoading(false);
       } catch (err) {
         console.log(err);
@@ -57,6 +59,11 @@ const Conversion = () => {
     getTotalStats();
   }, []);
 
+  const destinationCurrencyHandler = (event) => {
+    const selectedOption = event.target.value;
+    setSelectedCurrencyOption(selectedOption);
+  };
+
   return (
     <div className="conversion">
       {loading ? (
@@ -76,11 +83,14 @@ const Conversion = () => {
                 onChange={inputValueHandler}
               ></input>
             </div>
-            <button disabled={!amountFrom || amountFrom === 0}>CONVERT</button>
+            <button disabled={!amountFrom}>CONVERT</button>
             <div>
               <h2>Destination Currency</h2>
               <h5>Pick destination currency:</h5>
-              <select>
+              <select
+                name="destination-currencies"
+                onChange={destinationCurrencyHandler}
+              >
                 {destinationCurrencyOptions.map((currencyOption) => (
                   <option key={currencyOption} value={currencyOption}>
                     {currencyOption}
