@@ -83,8 +83,8 @@ const Conversion = () => {
         <h1>500 EUR</h1>
       </div>
       <div className="conversion-row third">
-        <h3>Total USD converted: 17563</h3>
-        <h3>Total conversions made: 38</h3>
+        <h3>Total USD converted: {totalStats.totalUsd}</h3>
+        <h3>Total conversions made: {totalStats.totalConversions}</h3>
       </div>
     </div>
   );
