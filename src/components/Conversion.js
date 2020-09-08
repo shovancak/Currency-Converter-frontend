@@ -6,6 +6,7 @@ import "./Conversion.css";
 
 const Conversion = () => {
   //State
+  const [latestCurrencyData, setLatestCurrencyData] = useState();
   const [amountFrom, setAmountFrom] = useState();
   const [destinationCurrencyOptions, setDestinationCurrencyOptions] = useState(
     []
@@ -16,6 +17,7 @@ const Conversion = () => {
   });
   const [loading, setLoading] = useState(true);
   const [selectedCurrencyOption, setSelectedCurrencyOption] = useState();
+  const [destinationCurrencyRate, setDestinationCurrencyRate] = useState();
 
   const inputValueHandler = (event) => {
     const value = event.target.value;
@@ -24,7 +26,7 @@ const Conversion = () => {
   };
 
   useEffect(() => {
-    //Function for getting supported currency names
+    //Function for getting supported currencies data
     const getDestinationCurrencyOptions = async () => {
       setLoading(true);
       try {
@@ -32,6 +34,7 @@ const Conversion = () => {
           "http://localhost:5000/api/currency/currency-data"
         );
         const data = await response.json();
+        setLatestCurrencyData(data);
         setDestinationCurrencyOptions([...Object.keys(data.latestData)]);
         setSelectedCurrencyOption([...Object.keys(data.latestData)][0]);
         setLoading(false);
@@ -62,6 +65,7 @@ const Conversion = () => {
   const destinationCurrencyHandler = (event) => {
     const selectedOption = event.target.value;
     setSelectedCurrencyOption(selectedOption);
+    setDestinationCurrencyRate(latestCurrencyData.latestData[selectedOption]);
   };
 
   return (
