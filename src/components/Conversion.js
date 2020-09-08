@@ -86,7 +86,8 @@ const Conversion = () => {
           }
         );
         const data = await response.json();
-        setConvertedAmont(data.convertedAmount);
+        const rounedConvertedAmount = data.convertedAmount.toFixed(4);
+        setConvertedAmont(rounedConvertedAmount);
       } catch (err) {
         console.log(err);
       }
