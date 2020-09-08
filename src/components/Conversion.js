@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import Loading from "./Loading";
+import Modal from "./Modal";
 
 import "./Conversion.css";
 
@@ -20,6 +21,8 @@ const Conversion = () => {
   const [destinationCurrencyRate, setDestinationCurrencyRate] = useState();
   const [convertedAmount, setConvertedAmont] = useState(0);
   const [convertedCurrency, setConvertedCurrency] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState();
 
   const inputValueHandler = (event) => {
     const value = event.target.value;
@@ -41,6 +44,8 @@ const Conversion = () => {
         setSelectedCurrencyOption([...Object.keys(data.latestData)][0]);
         setLoading(false);
       } catch (err) {
+        setShowModal(true);
+        setError(err.message);
         console.log(err);
       }
     };
@@ -56,6 +61,8 @@ const Conversion = () => {
         });
         setLoading(false);
       } catch (err) {
+        setShowModal(true);
+        setError(err.message);
         console.log(err);
       }
     };
@@ -92,6 +99,8 @@ const Conversion = () => {
         setConvertedAmont(rounedConvertedAmount);
         setConvertedCurrency(data.convertedCurrency);
       } catch (err) {
+        setShowModal(true);
+        setError(err.message);
         console.log(err);
       }
     };
@@ -112,6 +121,8 @@ const Conversion = () => {
           totalConversions: data.totalStats.totalConversions,
         });
       } catch (err) {
+        setShowModal(true);
+        setError(err.message);
         console.log(err);
       }
     };
@@ -120,55 +131,64 @@ const Conversion = () => {
   };
 
   return (
-    <div className="conversion">
-      {loading ? (
-        <Loading />
+    <React.Fragment>
+      {error ? (
+        <Modal show={showModal}>{error}</Modal>
       ) : (
-        <React.Fragment>
-          <div className="conversion-row first">
-            <div>
-              <h2>From USD</h2>
-              <h5>Add amount to convert:</h5>
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                name="amountFrom"
-                placeholder="Amount in USD"
-                onChange={inputValueHandler}
-              ></input>
-            </div>
-            <button disabled={!amountFrom} onClick={conversionButtonHandler}>
-              CONVERT
-            </button>
-            <div>
-              <h2>Destination Currency</h2>
-              <h5>Pick destination currency:</h5>
-              <select
-                name="destination-currencies"
-                onChange={destinationCurrencyHandler}
-              >
-                {destinationCurrencyOptions.map((currencyOption) => (
-                  <option key={currencyOption} value={currencyOption}>
-                    {currencyOption}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="conversion-row second">
-            <h2>Converted Amount</h2>
-            <h1>
-              {convertedAmount} {convertedCurrency}
-            </h1>
-          </div>
-          <div className="conversion-row third">
-            <h3>Total USD converted: {totalStats.totalUsd}</h3>
-            <h3>Total conversions made: {totalStats.totalConversions}</h3>
-          </div>
-        </React.Fragment>
+        <div className="conversion">
+          {loading ? (
+            <Loading />
+          ) : (
+            <React.Fragment>
+              <div className="conversion-row first">
+                <div>
+                  <h2>From USD</h2>
+                  <h5>Add amount to convert:</h5>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    name="amountFrom"
+                    placeholder="Amount in USD"
+                    onChange={inputValueHandler}
+                  ></input>
+                </div>
+                <button
+                  disabled={!amountFrom}
+                  onClick={conversionButtonHandler}
+                >
+                  CONVERT
+                </button>
+                <div>
+                  <h2>Destination Currency</h2>
+                  <h5>Pick destination currency:</h5>
+                  <select
+                    name="destination-currencies"
+                    onChange={destinationCurrencyHandler}
+                  >
+                    {destinationCurrencyOptions.map((currencyOption) => (
+                      <option key={currencyOption} value={currencyOption}>
+                        {currencyOption}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="conversion-row second">
+                <h2>Converted Amount</h2>
+                <h1>
+                  {convertedAmount} {convertedCurrency}
+                </h1>
+              </div>
+              <div className="conversion-row third">
+                <h3>Total USD converted: {totalStats.totalUsd}</h3>
+                <h3>Total conversions made: {totalStats.totalConversions}</h3>
+              </div>
+            </React.Fragment>
+          )}
+        </div>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 
