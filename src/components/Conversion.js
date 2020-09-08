@@ -91,7 +91,28 @@ const Conversion = () => {
         console.log(err);
       }
     };
+    const updateStatsRequest = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/total-stats/", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            amount: amountFrom,
+          }),
+        });
+        const data = await response.json();
+        setTotalStats({
+          totalUsd: data.totalData.totalUsd,
+          totalConversions: data.totalStats.totalConversions,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
     conversionRequest();
+    updateStatsRequest();
   };
 
   return (
