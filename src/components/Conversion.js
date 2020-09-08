@@ -70,10 +70,11 @@ const Conversion = () => {
           <h2>Destination Currency</h2>
           <h5>Pick destination currency:</h5>
           <select>
-            <option value="EUR">EUR</option>
-            <option value="GBP">GBP</option>
-            <option value="CZK">CZK</option>
-            <option value="PLN">PLN</option>
+            {destinationCurrencyOptions.map((currencyOption) => (
+              <option key={currencyOption} value={currencyOption}>
+                {currencyOption}
+              </option>
+            ))}
           </select>
         </div>
       </div>
