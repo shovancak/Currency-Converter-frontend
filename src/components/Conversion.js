@@ -1,15 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "./Conversion.css";
 
 const Conversion = () => {
+  //State
   const [amountFrom, setAmountFrom] = useState();
+  const [destinationCurrencyOptions, setDestinationCurrencyOptions] = useState(
+    []
+  );
+  const [totalStats, setTotalStats] = useState({
+    totalUsd: 0,
+    totalConversions: 0,
+  });
 
   const inputValueHandler = (event) => {
     const value = event.target.value;
-    const number = Math.abs(Number(value));
-    setAmountFrom(number);
+    const amount = Math.abs(Number(value));
+    setAmountFrom(amount);
   };
+
+  useEffect(() => {
+    //Function for getting supported currency names
+    const getDestinationCurrencyOptions = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/currency/currency-data"
+        );
+        const data = await response.json();
+        setDestinationCurrencyOptions([...Object.keys(data.latestData)]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    //Function for getting total stats => total USD converted, total conversion requests made
+    const getTotalStats = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/total-stats/");
+        const data = await response.json();
+        setTotalStats({
+          totalUsd: data.totalData.totalUsd,
+          totalConversions: data.totalData.totalConversions,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    //Calling functions
+    getDestinationCurrencyOptions();
+    getTotalStats();
+  }, []);
 
   return (
     <div className="conversion">
