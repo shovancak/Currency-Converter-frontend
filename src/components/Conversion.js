@@ -19,6 +19,7 @@ const Conversion = () => {
   const [selectedCurrencyOption, setSelectedCurrencyOption] = useState();
   const [destinationCurrencyRate, setDestinationCurrencyRate] = useState();
   const [convertedAmount, setConvertedAmont] = useState(0);
+  const [convertedCurrency, setConvertedCurrency] = useState();
 
   const inputValueHandler = (event) => {
     const value = event.target.value;
@@ -82,12 +83,14 @@ const Conversion = () => {
             body: JSON.stringify({
               amount: amountFrom,
               rate: destinationCurrencyRate,
+              currency: selectedCurrencyOption,
             }),
           }
         );
         const data = await response.json();
         const rounedConvertedAmount = data.convertedAmount.toFixed(4);
         setConvertedAmont(rounedConvertedAmount);
+        setConvertedCurrency(data.convertedCurrency);
       } catch (err) {
         console.log(err);
       }
@@ -156,7 +159,7 @@ const Conversion = () => {
           <div className="conversion-row second">
             <h2>Converted Amount</h2>
             <h1>
-              {convertedAmount} {selectedCurrencyOption}
+              {convertedAmount} {convertedCurrency}
             </h1>
           </div>
           <div className="conversion-row third">
