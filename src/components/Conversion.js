@@ -18,6 +18,7 @@ const Conversion = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCurrencyOption, setSelectedCurrencyOption] = useState();
   const [destinationCurrencyRate, setDestinationCurrencyRate] = useState();
+  const [convertedAmount, setConvertedAmont] = useState(0);
 
   const inputValueHandler = (event) => {
     const value = event.target.value;
@@ -68,6 +69,31 @@ const Conversion = () => {
     setDestinationCurrencyRate(latestCurrencyData.latestData[selectedOption]);
   };
 
+  const conversionButtonHandler = () => {
+    const conversionRequest = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/currency/conversion",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              amount: amountFrom,
+              rate: destinationCurrencyRate,
+            }),
+          }
+        );
+        const data = await response.json();
+        setConvertedAmont(data.convertedAmount);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    conversionRequest();
+  };
+
   return (
     <div className="conversion">
       {loading ? (
@@ -87,7 +113,9 @@ const Conversion = () => {
                 onChange={inputValueHandler}
               ></input>
             </div>
-            <button disabled={!amountFrom}>CONVERT</button>
+            <button disabled={!amountFrom} onClick={conversionButtonHandler}>
+              CONVERT
+            </button>
             <div>
               <h2>Destination Currency</h2>
               <h5>Pick destination currency:</h5>
@@ -105,7 +133,9 @@ const Conversion = () => {
           </div>
           <div className="conversion-row second">
             <h2>Converted Amount</h2>
-            <h1>500 EUR</h1>
+            <h1>
+              {convertedAmount} {selectedCurrencyOption}
+            </h1>
           </div>
           <div className="conversion-row third">
             <h3>Total USD converted: {totalStats.totalUsd}</h3>
