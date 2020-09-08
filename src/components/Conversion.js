@@ -104,7 +104,7 @@ const Conversion = () => {
         });
         const data = await response.json();
         setTotalStats({
-          totalUsd: data.totalData.totalUsd,
+          totalUsd: data.totalStats.totalUsd,
           totalConversions: data.totalStats.totalConversions,
         });
       } catch (err) {
