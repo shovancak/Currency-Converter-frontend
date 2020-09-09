@@ -39,7 +39,7 @@ const Conversion = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          "http://localhost:5000/api/currency/currency-data"
+          `${process.env.REACT_APP_BACKEND_URL}/currency/currency-data`
         );
         const data = await response.json();
         //State update
@@ -59,7 +59,9 @@ const Conversion = () => {
     const getTotalStats = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:5000/api/total-stats/");
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/total-stats/` //=> REACT_APP_BACKEND_URL = environmental variable containing backend url
+        );
         const data = await response.json();
         //State update
         setTotalStats({
@@ -94,7 +96,7 @@ const Conversion = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          "http://localhost:5000/api/currency/conversion",
+          `${process.env.REACT_APP_BACKEND_URL}/currency/conversion`,
           {
             method: "POST",
             headers: {
@@ -124,16 +126,19 @@ const Conversion = () => {
     const updateStatsRequest = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:5000/api/total-stats/", {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            amount: amountFrom,
-            currency: selectedCurrencyOption,
-          }),
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/total-stats/`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              amount: amountFrom,
+              currency: selectedCurrencyOption,
+            }),
+          }
+        );
         const data = await response.json();
         //State update
         setTotalStats({
