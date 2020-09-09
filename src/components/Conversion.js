@@ -25,12 +25,14 @@ const Conversion = () => {
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState();
 
+  // Event handler of input element => responsible for setting value of USD to be converted
   const inputValueHandler = (event) => {
     const value = event.target.value;
     const amount = Math.abs(Number(value));
     setAmountFrom(amount);
   };
 
+  // Hook responsible for getting latest currency data and latest data (total USD converted, total conversion requests made, most popular currency) from database everytime app rerenders
   useEffect(() => {
     //Function for getting supported currencies data
     const getDestinationCurrencyOptions = async () => {
@@ -40,23 +42,26 @@ const Conversion = () => {
           "http://localhost:5000/api/currency/currency-data"
         );
         const data = await response.json();
+        //State update
         setLatestCurrencyData(data);
         setDestinationCurrencyOptions([...Object.keys(data.latestData)]);
         setSelectedCurrencyOption([...Object.keys(data.latestData)][0]);
         setDestinationCurrencyRate([...Object.values(data.latestData)][0]);
         setLoading(false);
       } catch (err) {
+        //=> Catching error
         setShowModal(true);
         setError(err.message);
         console.log(err);
       }
     };
-    //Function for getting total stats => total USD converted, total conversion requests made
+    //Function for getting total stats => total USD converted, total conversion requests made, most popular currency
     const getTotalStats = async () => {
       setLoading(true);
       try {
         const response = await fetch("http://localhost:5000/api/total-stats/");
         const data = await response.json();
+        //State update
         setTotalStats({
           totalUsd: data.totalData.totalUsd,
           totalConversions: data.totalData.totalConversions,
@@ -64,6 +69,7 @@ const Conversion = () => {
         });
         setLoading(false);
       } catch (err) {
+        //=> Catching error
         setShowModal(true);
         setError(err.message);
         console.log(err);
@@ -74,14 +80,18 @@ const Conversion = () => {
     getTotalStats();
   }, []);
 
+  //Event handler of select element => responsible for setting destination currency and rate used for conversion
   const destinationCurrencyHandler = (event) => {
     const selectedOption = event.target.value;
     setSelectedCurrencyOption(selectedOption);
     setDestinationCurrencyRate(latestCurrencyData.latestData[selectedOption]);
   };
 
+  //Event handler for button element => responsible for sending conversion request and request updating data in database everytime button is clicked
   const conversionButtonHandler = () => {
+    //Function for sending conversion request
     const conversionRequest = async () => {
+      setLoading(true);
       try {
         const response = await fetch(
           "http://localhost:5000/api/currency/conversion",
@@ -99,15 +109,20 @@ const Conversion = () => {
         );
         const data = await response.json();
         const rounedConvertedAmount = await data.convertedAmount.toFixed(4);
+        //State update
         setConvertedAmont(rounedConvertedAmount);
         setConvertedCurrency(data.convertedCurrency);
+        setLoading(false);
       } catch (err) {
+        //=> Catching error
         setShowModal(true);
         setError(err.message);
         console.log(err);
       }
     };
+    //Function for updating values of total USD converted, total conversions requests made and most popular currency
     const updateStatsRequest = async () => {
+      setLoading(true);
       try {
         const response = await fetch("http://localhost:5000/api/total-stats/", {
           method: "PATCH",
@@ -120,17 +135,21 @@ const Conversion = () => {
           }),
         });
         const data = await response.json();
+        //State update
         setTotalStats({
           totalUsd: data.totalStats.totalUsd,
           totalConversions: data.totalStats.totalConversions,
           mostPopularCurrency: data.totalStats.mostPopularCurrency,
         });
+        setLoading(false);
       } catch (err) {
+        //=> Catching error
         setShowModal(true);
         setError(err.message);
         console.log(err);
       }
     };
+    //Calling functions
     conversionRequest();
     updateStatsRequest();
   };
