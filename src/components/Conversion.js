@@ -15,7 +15,7 @@ const Conversion = () => {
   const [totalStats, setTotalStats] = useState({
     totalUsd: 0,
     totalConversions: 0,
-    mostPopularCurrency: "",
+    mostPopularCurrency: "-",
   });
   const [loading, setLoading] = useState(true);
   const [selectedCurrencyOption, setSelectedCurrencyOption] = useState();
@@ -43,6 +43,7 @@ const Conversion = () => {
         setLatestCurrencyData(data);
         setDestinationCurrencyOptions([...Object.keys(data.latestData)]);
         setSelectedCurrencyOption([...Object.keys(data.latestData)][0]);
+        setDestinationCurrencyRate([...Object.values(data.latestData)][0]);
         setLoading(false);
       } catch (err) {
         setShowModal(true);
@@ -97,7 +98,7 @@ const Conversion = () => {
           }
         );
         const data = await response.json();
-        const rounedConvertedAmount = data.convertedAmount.toFixed(4);
+        const rounedConvertedAmount = await data.convertedAmount.toFixed(4);
         setConvertedAmont(rounedConvertedAmount);
         setConvertedCurrency(data.convertedCurrency);
       } catch (err) {
@@ -185,8 +186,18 @@ const Conversion = () => {
                 </h1>
               </div>
               <div className="conversion-row third">
-                <h3>Total USD converted: {totalStats.totalUsd}</h3>
-                <h3>Total conversions made: {totalStats.totalConversions}</h3>
+                <div className="total-stat">
+                  <h2>{totalStats.totalUsd}</h2>
+                  <h4>Total USD converted </h4>
+                </div>
+                <div className="total-stat">
+                  <h2> {totalStats.mostPopularCurrency}</h2>
+                  <h4>Most popular currency</h4>
+                </div>
+                <div className="total-stat">
+                  <h2>{totalStats.totalConversions}</h2>
+                  <h4>Total conversions made </h4>
+                </div>
               </div>
             </React.Fragment>
           )}
