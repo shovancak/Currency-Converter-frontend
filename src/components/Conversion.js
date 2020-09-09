@@ -15,6 +15,7 @@ const Conversion = () => {
   const [totalStats, setTotalStats] = useState({
     totalUsd: 0,
     totalConversions: 0,
+    mostPopularCurrency: "",
   });
   const [loading, setLoading] = useState(true);
   const [selectedCurrencyOption, setSelectedCurrencyOption] = useState();
@@ -58,6 +59,7 @@ const Conversion = () => {
         setTotalStats({
           totalUsd: data.totalData.totalUsd,
           totalConversions: data.totalData.totalConversions,
+          mostPopularCurrency: data.totalData.mostPopularCurrency,
         });
         setLoading(false);
       } catch (err) {
@@ -113,12 +115,14 @@ const Conversion = () => {
           },
           body: JSON.stringify({
             amount: amountFrom,
+            currency: selectedCurrencyOption,
           }),
         });
         const data = await response.json();
         setTotalStats({
           totalUsd: data.totalStats.totalUsd,
           totalConversions: data.totalStats.totalConversions,
+          mostPopularCurrency: data.totalStats.mostPopularCurrency,
         });
       } catch (err) {
         setShowModal(true);
